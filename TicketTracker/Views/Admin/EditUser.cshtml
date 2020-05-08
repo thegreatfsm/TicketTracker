@@ -1,0 +1,46 @@
+﻿@model AppUser
+@{ 
+    Layout = "_Layout";
+}
+<div asp-validation-summary="All" class="text-danger"></div>
+<form method="post" asp-action="EditUser" class="m-1 p-1">
+    <input name="id" type="hidden" value="@Model.Id" />
+    <div class="form-group" method="post" asp-action="EditUser">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label for="assignmentgroup">Group Name</label>
+        <input class="form-control" name="assignmentgroup" />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Group</button>
+    <a class="btn btn-danger" asp-action="Users">Cancel</a>
+</form>
+<table class="table table-bordered table-striped">
+    <tr><th>Group Name</th><th></th></tr>
+    @if (Model.AssigmentGroups != null && Model.AssigmentGroups?.Count() > 0)
+    {
+        @foreach (var group in Model.AssigmentGroups)
+        {
+            <tr>
+                <td>@group.Group.Name</td>
+                <td>
+                    <form asp-action="RemoveAssignmentGroup">
+                        <input type="hidden" value="@group.Group.Id" name="groupid" />
+                        <input type="hidden" value="@Model.Id" name="userid" />
+                        <button class="btn btn-danger" type="submit" formaction="RemoveGroup">Remove</button>
+                    </form>
+                </td>
+            </tr>
+
+        }
+    }
+</table>

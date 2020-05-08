@@ -1,0 +1,105 @@
+﻿@model Ticket
+@{
+    Layout = "_Layout"; 
+}
+<div asp-validation-summary="All" class="text-danger"></div>
+<form class="m-1" asp-controller="Ticket" method="post">
+    <input type="hidden" name="returnUrl" value="@(ViewBag.ReturnUrl??"/Ticket/List/")" />
+    <input type="hidden" asp-for="IsChild" value="@Model.IsChild" />
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="TicketId"></label>
+                <input class="form-control" asp-for="TicketId" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Opened"></label>
+                <div class="form-control" readonly>@Model.Opened.ToString("MM/dd/yyyy H:mm")</div>
+                <input asp-for="Opened" type="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Closed"></label>
+                <div class="form-control" readonly>@(Model.Closed?.ToString("MM/dd/yyyy H:mm") ?? "Open")</div>
+                <input asp-for="Closed" type="hidden" />
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="AssignmentStatus">Assignment Status</label>
+                <input class="form-control" asp-for="AssignmentStatus" readonly />
+            </div>
+            <div class="form-group">
+                <label for="userName">Assigned User</label>
+                <input class="form-control" name="userName" value="@Model.AssignedUser?.UserName" @(Model.IsChild || Model.AssignmentStatus == AssignmentStatus.Resolved ? "readonly" : null) />
+            </div>
+            <div class="form-group">
+                <label for="assignmentGroup">Assigned Group</label>
+                <input class="form-control" name="assignmentGroup" required value="@Model.AssignedGroup?.Name" @(Model.IsChild || Model.AssignmentStatus == AssignmentStatus.Resolved ? "readonly" : null) />
+            </div>
+        </div>
+    </div>
+    @if (!Model.IsChild && Model.AssignmentStatus != AssignmentStatus.Resolved)
+    {
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" type="text" class="form-control" rows="3"></textarea>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" readonly/>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" type="text" class="form-control" rows="3" readonly></textarea>
+        </div>
+    }
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#notes" role="tab" data-toggle="tab">
+                Notes
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#related" role="tab" data-toggle="tab">
+                Related Tickets
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="m-1 p-1 tab-pane fade show active" id="notes">
+            <div class="form-group">
+                <label for="note">Note</label>
+                <textarea name="note" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary" formaction="AddNote">Add Note</button>
+            @if (Model.Notes != null && Model.Notes.Count() > 0)
+            {
+                <table class="table table-bordered table-sm m-1">
+                    <tr><th>Added</th><th>Description</th></tr>
+                    @foreach (var n in Model.Notes.OrderByDescending(n => n.NoteId))
+                    {
+                        <tr><td>@n.Added.ToString("MM/dd/yyyy H:mm")</td><td>@n.Description</td></tr>
+                    }
+                </table>
+            }
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="related">
+            <div class="form-group">
+                <label for="parentid">Parent</label>
+                <input name="parentid" class="form-control" value="@Model.Parent?.TicketId" />
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" formaction="Edit">Save</button>
+    <button type="submit" class="btn btn-primary" formaction="EditAndReturn">Save and Close</button>
+    <button type="submit" class="btn btn-secondary" formaction="Accept">Accept</button>
+    <button type="submit" class="btn btn-secondary" formaction="Resolve">Resolve</button>
+    <a href="@(ViewBag.ReturnUrl ?? "/Ticket/List/")" class="btn btn-danger">Cancel</a>
+</form>

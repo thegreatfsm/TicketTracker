@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Ticket>
+@{ 
+    Layout = "_Layout";
+}
+
+<table class="table table-bordered table-striped">
+    <tr><th>Ticket ID</th><th>Assignment Group</th><th>Assigned User</th><th>Status</th><th></th></tr>
+    @foreach(var t in Model)
+    {
+        <tr>
+            <td>@t.TicketId</td>
+            <td>@t.AssignedGroup</td>
+            <td>@t.AssignedUser?.UserName</td>
+            <td>@t.AssignmentStatus</td>
+            <td>
+                <form asp-action="DeleteTicket" method="post" asp-route-ticketId="@t.TicketId">
+                    <a class="btn btn-secondary" asp-action="EditTicket" asp-route-ticketId="@t.TicketId">Edit</a>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
