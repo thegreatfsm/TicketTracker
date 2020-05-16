@@ -18,8 +18,13 @@ using TicketTracker.Models;
 
 #line default
 #line hidden
+#line 2 "C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\Views\_ViewImports.cshtml"
+using Microsoft.AspNetCore.Identity;
+
+#line default
+#line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8c6c2e67cfe93d16f4bfc0401382e5da5c1caf82", @"/Views/Admin/Groups.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d741241d03121ab822da74d2cb8c80aa0bf34e98", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"be923a130ea3cb7ec709a0266964f33ec8c6b2a9", @"/Views/_ViewImports.cshtml")]
     public class Views_Admin_Groups : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<IEnumerable<AssignmentGroup>>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("btn btn-secondary"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -91,12 +96,12 @@ using TicketTracker.Models;
             WriteLiteral("</td>\r\n            <td>\r\n                ");
             EndContext();
             BeginContext(326, 286, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8c6c2e67cfe93d16f4bfc0401382e5da5c1caf826556", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8c6c2e67cfe93d16f4bfc0401382e5da5c1caf826719", async() => {
                 BeginContext(397, 22, true);
                 WriteLiteral("\r\n                    ");
                 EndContext();
                 BeginContext(419, 86, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8c6c2e67cfe93d16f4bfc0401382e5da5c1caf826958", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8c6c2e67cfe93d16f4bfc0401382e5da5c1caf827121", async() => {
                     BeginContext(497, 4, true);
                     WriteLiteral("Edit");
                     EndContext();
@@ -174,7 +179,7 @@ using TicketTracker.Models;
             WriteLiteral("</table>\r\n");
             EndContext();
             BeginContext(665, 68, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8c6c2e67cfe93d16f4bfc0401382e5da5c1caf8212399", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8c6c2e67cfe93d16f4bfc0401382e5da5c1caf8212562", async() => {
                 BeginContext(717, 12, true);
                 WriteLiteral("Create Group");
                 EndContext();

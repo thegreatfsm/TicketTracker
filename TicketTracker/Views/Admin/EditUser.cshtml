@@ -1,46 +1,68 @@
-﻿@model AppUser
+﻿@model EditUserViewModel
 @{ 
     Layout = "_Layout";
 }
 <div asp-validation-summary="All" class="text-danger"></div>
 <form method="post" asp-action="EditUser" class="m-1 p-1">
-    <input name="id" type="hidden" value="@Model.Id" />
+    <input asp-for="Id" type="hidden" value="@Model.User.Id" />
     <div class="form-group" method="post" asp-action="EditUser">
-        <label asp-for="Id"></label>
-        <input asp-for="Id" class="form-control" readonly />
+        <label asp-for="User.Id"></label>
+        <input asp-for="User.Id" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" readonly />
+        <label asp-for="User.UserName"></label>
+        <input asp-for="User.UserName" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" readonly />
+        <label asp-for="User.Email"></label>
+        <input asp-for="User.Email" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label for="assignmentgroup">Group Name</label>
-        <input class="form-control" name="assignmentgroup" />
+        <label asp-for="GroupName">Group Name</label>
+        <input class="form-control" asp-for="GroupName" />
     </div>
-    <button type="submit" class="btn btn-primary">Add Group</button>
+    <div class="form-group">
+        <label asp-for="RoleName">Role Name</label>
+        <input class="form-control" asp-for="RoleName" />
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
     <a class="btn btn-danger" asp-action="Users">Cancel</a>
 </form>
 <table class="table table-bordered table-striped">
     <tr><th>Group Name</th><th></th></tr>
-    @if (Model.AssigmentGroups != null && Model.AssigmentGroups?.Count() > 0)
+    @if (Model.User.AssigmentGroups != null && Model.User.AssigmentGroups?.Count() > 0)
     {
-        @foreach (var group in Model.AssigmentGroups)
+        @foreach (var group in Model.User.AssigmentGroups)
         {
             <tr>
                 <td>@group.Group.Name</td>
                 <td>
                     <form asp-action="RemoveAssignmentGroup">
                         <input type="hidden" value="@group.Group.Id" name="groupid" />
-                        <input type="hidden" value="@Model.Id" name="userid" />
-                        <button class="btn btn-danger" type="submit" formaction="RemoveGroup">Remove</button>
+                        <input type="hidden" value="@Model.User.Id" name="userid" />
+                        <button class="btn btn-danger" type="submit" formaction="RemoveGroup">Remove Group</button>
                     </form>
                 </td>
             </tr>
-
+        }
+    }
+</table>
+<table class="table table-bordered table-striped">
+    <tr><th>Role Name</th><th></th></tr>
+    @if (Model.Roles != null && Model.Roles.Count() > 0)
+    {
+        @foreach (var role in Model.Roles)
+        {
+            <tr>
+                <td>@role.Name</td>
+                <td>
+                    <form asp-action="RemoveRole">
+                        <input type="hidden" value="@role.Id" name="roleid" />
+                        <input type="hidden" value="@Model.User.Id" name="userid" />
+                        <button type="submit" class="btn btn-danger">Remove Role</button>
+                    </form>
+                </td>
+            </tr>
         }
     }
 </table>

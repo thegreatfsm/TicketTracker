@@ -1,0 +1,32 @@
+﻿.login {
+    height: 400px;
+    width: 350px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: hsl(217,100%,76%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+    -webkit-box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.75);
+}
+.create {
+    height: 500px;
+    width: 350px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: hsl(217,100%,76%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+    -webkit-box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.75);
+}

@@ -1,0 +1,12 @@
+﻿@{ 
+    Layout = "_Layout";
+}
+
+<form method="post" asp-action="CreateRole">
+    <div class="form-group">
+        <label for="name">Role Name:</label>
+        <input class="form-control" name="name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Roles" class="btn btn-secondary">Cancel</a>
+</form>

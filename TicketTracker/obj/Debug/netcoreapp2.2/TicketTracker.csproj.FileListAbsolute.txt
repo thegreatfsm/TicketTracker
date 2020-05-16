@@ -35,3 +35,5 @@ C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\obj\Debug\netcoreapp2.2
 C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Login.g.cshtml.cs
 C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\obj\Debug\netcoreapp2.2\Razor\Views\Account\Edit.g.cshtml.cs
+C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\obj\Debug\netcoreapp2.2\Razor\Views\Admin\Roles.g.cshtml.cs
+C:\Users\Joseph\source\repos\TicketTracker\TicketTracker\obj\Debug\netcoreapp2.2\Razor\Views\Admin\CreateRole.g.cshtml.cs
