@@ -3,7 +3,7 @@
     width: 350px;
     margin-top: auto;
     margin-bottom: auto;
-    background-color: hsl(217,100%,76%);
+    background-color: #bdbdbd;
     position: relative;
     display: flex;
     justify-content: center;
@@ -19,7 +19,7 @@
     width: 350px;
     margin-top: auto;
     margin-bottom: auto;
-    background-color: hsl(217,100%,76%);
+    background-color: #bdbdbd;
     position: relative;
     display: flex;
     justify-content: center;

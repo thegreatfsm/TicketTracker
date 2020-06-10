@@ -32,6 +32,23 @@ namespace TicketTracker.Controllers
             }
             return newgroups.ToArray();
         }
+        private void ValidateGroups(AppUser user, AssignmentGroup group)
+        {
+            var groups = groupRepository.AssociatedGroups(user);
+            var validated = false;
+            foreach(var g in groups)
+            {
+                if(g.GroupId == group.Id)
+                {
+                    validated = true;
+                    break;
+                }
+            }
+            if (!validated)
+            {
+                ModelState.AddModelError("", "User does not belong to group");
+            }
+        }
         public IActionResult List(int? ticketId, AssignmentStatus? assignment, string title, string[] groups, string user, int pageNum = 1, int pageSize = 10)
         {
             groups = CleanGroups(groups);
@@ -75,6 +92,30 @@ namespace TicketTracker.Controllers
                 .Take(model.PageSize);
             return View("List", model);
         }
+        public async Task<IActionResult> OpenUnassigned()
+        {
+            var userName = Request.HttpContext.User.Identity.Name;
+            var user = await userManager.FindByNameAsync(userName);
+            var groups = new HashSet<int>();
+            var groupNames = new List<string>();
+            foreach(var g in groupRepository.AssociatedGroups(user))
+            {
+                groups.Add(g.GroupId);
+                groupNames.Add(g.Group.Name);
+            }
+            var preTickets = ticketRepository.Tickets.Where(t => groups.Contains(t.AssignedGroup.Id) && t.AssignmentStatus == AssignmentStatus.Open);
+            var model = new ListViewModel
+            {
+                Groups = groupNames.ToArray(),
+                PageSize = 10,
+                PageNumber = 1,
+                Total = preTickets.Count(),
+                Tickets = preTickets.OrderBy(t => t.TicketId)
+                .Skip((1 - 1) * 10)
+                .Take(10)
+            };
+            return View("List", model);
+        }
             
         public IActionResult Edit(int ticketId, string returnUrl)
         {
@@ -86,10 +127,15 @@ namespace TicketTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Ticket ticket, string userName, string assignmentGroup, string returnUrl, int? parentid)
         {
-            if (ModelState.IsValid && parentid == null && !ticket.IsChild)
+            var group = groupRepository.AssignmentGroups.FirstOrDefault(g => g.Name.Equals(assignmentGroup, StringComparison.OrdinalIgnoreCase));
+            var user = userName != null ? await userManager.FindByNameAsync(userName) : null;
+            if(group == null)
             {
-                var group = groupRepository.AssignmentGroups.FirstOrDefault(g => g.Name.Equals(assignmentGroup, StringComparison.OrdinalIgnoreCase));
-                var user = userName != null ? await userManager.FindByNameAsync(userName) : null;
+                ModelState.AddModelError("", "Tickets must have an assigned group");
+            }
+            if (user != null && group != null) ValidateGroups(user, group);
+            if (ModelState.IsValid && parentid == null && !ticket.IsChild && group != null)
+            {
                 ticket.AssignedGroup = group;
                 ticket.AssignedUser = user;
                 if (ticket.AssignedUser != null) ticket.AssignmentStatus = AssignmentStatus.InProgress;
@@ -128,15 +174,22 @@ namespace TicketTracker.Controllers
             var original = ticketRepository.Tickets.FirstOrDefault(t => t.TicketId == ticket.TicketId);
             ticket.Notes = original.Notes;
             ticket.Children = original.Children;
-            return View();
+            ticket.AssignedUser = original.AssignedUser;
+            ticket.AssignedGroup = original.AssignedGroup;
+            return View("Edit", ticket);
         }
         [HttpPost]
         public async Task<IActionResult> EditAndReturn(Ticket ticket, string userName, string assignmentGroup, string returnUrl, int? parentid)
         {
+            var group = groupRepository.AssignmentGroups.FirstOrDefault(g => g.Name.Equals(assignmentGroup, StringComparison.OrdinalIgnoreCase));
+            var user = userName != null ? await userManager.FindByNameAsync(userName) : null;
+            if (group == null)
+            {
+                ModelState.AddModelError("", "Tickets must have an assigned group");
+            }
+            if (user != null && group != null) ValidateGroups(user, group);
             if (ModelState.IsValid && parentid == null && !ticket.IsChild)
             {
-                var group = groupRepository.AssignmentGroups.FirstOrDefault(g => g.Name.Equals(assignmentGroup, StringComparison.OrdinalIgnoreCase));
-                var user = userName != null ? await userManager.FindByNameAsync(userName) : null;
                 ticket.AssignedGroup = group;
                 ticket.AssignedUser = user;
                 if (ticket.AssignedUser != null) ticket.AssignmentStatus = AssignmentStatus.InProgress;
@@ -175,7 +228,9 @@ namespace TicketTracker.Controllers
             var original = ticketRepository.Tickets.FirstOrDefault(t => t.TicketId == ticket.TicketId);
             ticket.Notes = original.Notes;
             ticket.Children = original.Children;
-            return View("Edit");
+            ticket.AssignedUser = original.AssignedUser;
+            ticket.AssignedGroup = original.AssignedGroup;
+            return View("Edit", ticket);
         }
         [HttpPost]
         public async Task<IActionResult> Accept(Ticket ticket, string assignmentGroup)
@@ -183,7 +238,8 @@ namespace TicketTracker.Controllers
             if (ticket.TicketId != 0) ticket = ticketRepository.Tickets.FirstOrDefault(t => t.TicketId == ticket.TicketId);
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             var group = groupRepository.AssignmentGroups.FirstOrDefault(g => g.Name.Equals(assignmentGroup, StringComparison.OrdinalIgnoreCase));
-            if (user != null && ticket.AssignedUser == null)
+            ValidateGroups(user, group);
+            if (ModelState.IsValid && user != null && ticket.AssignedUser == null && group != null)
             {
                 ticket.AssignmentStatus = AssignmentStatus.InProgress;
                 ticket.AssignedUser = user;

@@ -1,5 +1,17 @@
-﻿@{ 
+﻿@model HomeViewModel
+@{ 
     Layout = "_Layout";
 }
 
-<h4>Hello world</h4>
+<h2 class="text-center">Hello, welcome to TicketTracker</h2>
+<p class="text-center">TicketTracker is a workflow management app that allows users to be put into assignment groups, and tickets to be created and sent to said groups.</p>
+<div class="container">
+    <div class="row m-1">
+        <div class="card col-sm-6">
+            <div class="card-body"><h5 class="card-title text-center">Total Tickets</h5><h6 class="card-text text-center">@Model.TotalTickets</h6></div>
+        </div>
+        <div class="card col-sm-6">
+            <div class="card-body"><h5 class="card-title text-center">Open Tickets</h5><h6 class="card-text text-center">@Model.OpenTickets</h6></div>
+        </div>
+    </div>
+</div>
